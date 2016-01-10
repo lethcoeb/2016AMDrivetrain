@@ -2,6 +2,9 @@ package org.usfirst.frc.team1806.robot.subsystems;
 
 import org.usfirst.frc.team1806.robot.RobotMap;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -10,12 +13,29 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSS extends Subsystem {
     
-    Talon leftTalon = new Talon(RobotMap.leftMotor);
-    Talon rightTalon = new Talon(RobotMap.rightMotor);
+    Talon leftTalon;
+    Talon rightTalon;
+    AHRS navx;
     
-    public void execute(double power, double turn){
+    public DrivetrainSS(){
+    	leftTalon = new Talon(RobotMap.leftMotor);
+        rightTalon = new Talon(RobotMap.rightMotor);
+        navx = new AHRS(SerialPort.Port.kMXP);
+        
+        if(!navx.isConnected()){
+        	//CRITICAL ERROR
+        }
+        
+    }
+    
+    public void arcadeDrive(double power, double turn){
     	leftTalon.set(power + turn);
     	rightTalon.set(power - turn);
+    }
+    
+    public void tankDrive(double left, double right){
+    	leftTalon.set(left);
+    	rightTalon.set(right);
     }
     
     public void stop(){
@@ -30,6 +50,10 @@ public class DrivetrainSS extends Subsystem {
     
     public double getRightPower(){
     	return rightTalon.get();
+    }
+    
+    public double getAngle(){
+    	return navx.getAngle();
     }
     
     

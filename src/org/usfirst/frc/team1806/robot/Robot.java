@@ -13,6 +13,9 @@ public class Robot extends IterativeRobot {
 	//Subsystems
 	public static DrivetrainSS dtSS;
 	
+	//States
+	public static States states;
+	
 	public static OI oi;
 
     /**
@@ -21,7 +24,10 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	
+    	//Instantiate objects
     	dtSS = new DrivetrainSS();
+    	
+    	states = new States();
     	
 		oi = new OI();
         // instantiate the command used for the autonomous period
@@ -55,8 +61,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopPeriodic() {
+    	
+    	oi.update();
+    	
         Scheduler.getInstance().run();
-        oi.update();
+        
     }
 
     public void testPeriodic() {
