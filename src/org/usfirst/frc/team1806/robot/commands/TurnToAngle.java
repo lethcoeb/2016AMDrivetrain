@@ -25,8 +25,6 @@ public class TurnToAngle extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
-    	Robot.states.DrivetrainModeTracker = States.DrivetrainMode.TURNTOANGLE;
-    	
     	ps = new PIDSource() {
 			
 			@Override
@@ -56,6 +54,9 @@ public class TurnToAngle extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
+    	//TODO: is this inefficient?? It's called multiple times per cycle through teleop periodic.
+    	Robot.oi.updateInputs();
     	
     	if(Robot.oi.getRsMagnitude() > Constants.joystickDeadzoneConstant){
     		pc.setSetpoint(Robot.oi.getRsAngle());

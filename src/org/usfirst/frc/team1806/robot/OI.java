@@ -12,6 +12,13 @@ import util.utilityClasses.SWATLib;
 
 public class OI {
 
+	/*
+	 * 
+	 * RT - enter turn to angle mode
+	 * A - toggle between arcade and tank
+	 * 
+	 */
+	
 	public double lsY = 0;
 	public double rsX = 0;
 	public double rsY = 0;
@@ -22,17 +29,14 @@ public class OI {
 
 	XboxController dc = new XboxController(0, Constants.joystickDeadzoneConstant, Constants.triggerDeadzoneConstant);
 
-	public void update() {
+	public void run() {
 		// put operator interface things here
 
 		// read inputs
-		lsY = dc.getLeftJoyY();
-		rsX = dc.getRightJoyX();
-		rsY = dc.getRightJoyY();
-		A = dc.getButtonA();
-		RT = dc.getRightTrigger();
+		updateInputs();
 
 		if(RT > .5 && Robot.states.DrivetrainModeTracker != States.DrivetrainMode.TURNTOANGLE){
+			Robot.states.DrivetrainModeTracker = States.DrivetrainMode.TURNTOANGLE;
 			new TurnToAngle().start();
 		}
 		
@@ -46,13 +50,22 @@ public class OI {
 		}
 
 		if (Robot.states.DrivetrainModeTracker == States.DrivetrainMode.ARCADE) {
+			//DEADZONES ARE HANDLED IN XBOX CONTROLLER CLASS
 			Robot.dtSS.arcadeDrive(lsY, rsX);
 		}else if(Robot.states.DrivetrainModeTracker == States.DrivetrainMode.TANK){
 			Robot.dtSS.tankDrive(lsY, rsY);
 		}else if(Robot.states.DrivetrainModeTracker == States.DrivetrainMode.TURNTOANGLE){
-			
+			//do nuttin bc its handled by the TurnToAngle command
 		}
 
+	}
+	
+	public void updateInputs(){
+		lsY = dc.getLeftJoyY();
+		rsX = dc.getRightJoyX();
+		rsY = dc.getRightJoyY();
+		A = dc.getButtonA();
+		RT = dc.getRightTrigger();
 	}
 	
 	public double getRsAngle(){
