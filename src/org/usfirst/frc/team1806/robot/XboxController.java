@@ -85,7 +85,7 @@ public class XboxController extends Joystick {
 	}
 
 	public double getLeftJoyY() {
-		if (Math.abs(getRawAxis(4)) >= _joystickDeadzoneValue) {
+		if (Math.abs(getRawAxis(1)) >= _joystickDeadzoneValue) {
 			return -getRawAxis(1);
 		} else
 			return 0;

@@ -7,6 +7,7 @@ import org.usfirst.frc.team1806.robot.States;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -32,8 +33,20 @@ public class TurnToAngle extends Command {
 				// TODO Auto-generated method stub
 				return Robot.dtSS.getAngle();
 			}
+
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {
+				// TODO Auto-generated method stub
+				ps.setPIDSourceType(PIDSourceType.kDisplacement);
+			}
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				// TODO Auto-generated method stub
+				return PIDSourceType.kDisplacement;
+			}
 		};
-		
+
 		po = new PIDOutput() {
 			
 			@Override
@@ -48,7 +61,6 @@ public class TurnToAngle extends Command {
 		pc.setOutputRange(-1, 1);
 		pc.setContinuous(true);
 		pc.enable();
-		
     	
     }
 

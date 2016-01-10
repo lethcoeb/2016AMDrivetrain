@@ -20,11 +20,8 @@ public class DrivetrainSS extends Subsystem {
     public DrivetrainSS(){
     	leftTalon = new Talon(RobotMap.leftMotor);
         rightTalon = new Talon(RobotMap.rightMotor);
+        rightTalon.setInverted(true);
         navx = new AHRS(SerialPort.Port.kMXP);
-        
-        if(!navx.isConnected()){
-        	//CRITICAL ERROR
-        }
         
     }
     

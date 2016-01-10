@@ -16,6 +16,8 @@ public class Robot extends IterativeRobot {
 	//States
 	public static States states;
 	
+	public static SmartDashboardInterface sdi;
+	
 	public static OI oi;
 
     /**
@@ -28,6 +30,9 @@ public class Robot extends IterativeRobot {
     	dtSS = new DrivetrainSS();
     	
     	states = new States();
+    	states.reset();
+    	
+    	sdi = new SmartDashboardInterface();
     	
 		oi = new OI();
         // instantiate the command used for the autonomous period
@@ -35,6 +40,8 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		oi.updateInputs();
+		sdi.update();
 	}
 
     public void autonomousInit() {
@@ -62,9 +69,13 @@ public class Robot extends IterativeRobot {
     
     public void teleopPeriodic() {
     	
+    	Scheduler.getInstance().run();
+    	
     	oi.run();
     	
-        Scheduler.getInstance().run();
+        
+        
+        sdi.update();
         
     }
 

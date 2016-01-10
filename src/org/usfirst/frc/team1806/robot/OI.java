@@ -19,15 +19,28 @@ public class OI {
 	 * 
 	 */
 	
-	public double lsY = 0;
-	public double rsX = 0;
-	public double rsY = 0;
-	public double RT = 0;
-	public boolean A = false;
+	public double lsY;
+	public double rsX;
+	public double rsY;
+	public double RT;
+	public boolean A;
 
-	private Latch arcadeTankLatch = new Latch();
+	private Latch arcadeTankLatch;
 
-	XboxController dc = new XboxController(0, Constants.joystickDeadzoneConstant, Constants.triggerDeadzoneConstant);
+	XboxController dc;
+	
+	public OI(){
+		
+		lsY = 0;
+		rsX = 0;
+		rsY = 0;
+		RT = 0;
+		A = false;
+		
+		arcadeTankLatch = new Latch();
+		dc = new XboxController(0, Constants.joystickDeadzoneConstant, Constants.triggerDeadzoneConstant);
+		
+	}
 
 	public void run() {
 		// put operator interface things here
@@ -70,7 +83,7 @@ public class OI {
 	
 	public double getRsAngle(){
 		//TODO check that this returns 0-360 deg like a unit circle
-		return Math.atan(rsY/rsX);
+		return Math.atan(rsY/rsX) * 180/Math.PI;
 	}
 	
 	public double getRsMagnitude(){

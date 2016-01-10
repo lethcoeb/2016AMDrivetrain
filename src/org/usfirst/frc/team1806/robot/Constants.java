@@ -2,7 +2,7 @@ package org.usfirst.frc.team1806.robot;
 
 public class Constants {
 	
-	public static final double joystickDeadzoneConstant = .15;
+	public static final double joystickDeadzoneConstant = .25;
 	public static final double triggerDeadzoneConstant = .1;
 	
 	//turning pid
