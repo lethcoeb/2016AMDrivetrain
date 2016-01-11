@@ -2,6 +2,7 @@ package org.usfirst.frc.team1806.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import util.utilityClasses.SWATLib;
 
 public class XboxController extends Joystick {
 
@@ -130,7 +131,7 @@ public class XboxController extends Joystick {
 	public boolean getButtonRS() {
 		return getRawButton(10);
 	}
-
+	
 	public boolean getPOVUp() {
 		return getPOV() > 45 && getPOV() < 135;
 	}

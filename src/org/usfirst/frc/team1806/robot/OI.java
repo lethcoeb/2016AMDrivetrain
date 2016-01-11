@@ -27,7 +27,7 @@ public class OI {
 
 	private Latch arcadeTankLatch;
 
-	XboxController dc;
+	public XboxController dc;
 	
 	public OI(){
 		
@@ -88,10 +88,6 @@ public class OI {
 	
 	public double getRsMagnitude(){
 		return SWATLib.convertTo2DVector(rsX, rsY);
-	}
-	
-	public double getRT(){
-		return RT;
 	}
 
 }
