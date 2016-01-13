@@ -75,8 +75,6 @@ public class Robot extends IterativeRobot {
     	
     	oi.run();
     	
-        
-        
         sdi.update();
         
     }

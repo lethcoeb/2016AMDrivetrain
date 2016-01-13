@@ -41,23 +41,11 @@ public class XboxController extends Joystick {
 	}
 
 	public double getRightTrigger() {
-		if (getRawAxis(3) > _triggerDeadzoneValue) {
 			return getRawAxis(3);
-		} else
-			return 0;
-
-		//return getRawAxis3;
-		
 	}
 
 	public double getLeftTrigger() {
-		if (getRawAxis(2) > _triggerDeadzoneValue) {
 			return getRawAxis(2);
-		} else
-			return 0;
-		
-		//return getRawAxis2;
-		
 	}
 
 	// TODO: find out if there's a more efficient way to do the deadzone check.
@@ -65,31 +53,19 @@ public class XboxController extends Joystick {
 	// call getRawAxis twice. make a local variable and set it to the getRawAxis
 	// value? idk smh
 	public double getRightJoyX() {
-		if (Math.abs(getRawAxis(4)) >= _joystickDeadzoneValue) {
 			return getRawAxis(4);
-		} else
-			return 0;
 	}
 
 	public double getRightJoyY() {
-		if (Math.abs(getRawAxis(5)) >= _joystickDeadzoneValue) {
 			return -getRawAxis(5);
-		} else
-			return 0;
 	}
 
 	public double getLeftJoyX() {
-		if (Math.abs(getRawAxis(0)) >= _joystickDeadzoneValue) {
 			return getRawAxis(0);
-		} else
-			return 0;
 	}
 
 	public double getLeftJoyY() {
-		if (Math.abs(getRawAxis(1)) >= _joystickDeadzoneValue) {
 			return -getRawAxis(1);
-		} else
-			return 0;
 	}
 
 	public boolean getButtonA() {
