@@ -35,4 +35,12 @@ public class Constants {
 	//FIXME: make this a real value
 	public static final double distancePerPulse = .1;
 	
+	/*
+	 * AUTO CONSTANTS
+	 */
+	
+	public static final double distanceToDefense = 24; //distance to defense from auto starting pos
+	//value at which the robot has hit the defense and jumped
+	public static final double jumpThreshold = 5;
+	
 }
