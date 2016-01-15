@@ -35,7 +35,7 @@ public class TurnToAngleDriverInput extends Command {
 			@Override
 			public double pidGet() {
 				// TODO Auto-generated method stub
-				return Robot.dtSS.getAngle();
+				return Robot.dtSS.navxYaw();
 			}
 
 			@Override

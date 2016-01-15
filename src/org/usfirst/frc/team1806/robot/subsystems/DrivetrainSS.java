@@ -52,8 +52,8 @@ public class DrivetrainSS extends Subsystem {
     }
     
     public void arcadeDrive(double power, double turn){
-    	leftTalon.set(power + turn);
-    	rightTalon.set(power - turn);
+    	leftTalon.set(.5 * power + .5 *turn);
+    	rightTalon.set(.5 * power -  .5 * turn);
     }
     
     public void tankDrive(double left, double right){
