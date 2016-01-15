@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands;
 
+import org.usfirst.frc.team1806.robot.Constants;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -24,5 +26,8 @@ public class CrossAndShoot extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	
+    	addSequential(new AutoDriveToDistance(Constants.distanceToDefense));
+    	
     }
 }
