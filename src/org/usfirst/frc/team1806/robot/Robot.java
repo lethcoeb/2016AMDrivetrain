@@ -1,13 +1,20 @@
 
 package org.usfirst.frc.team1806.robot;
 
+import java.awt.Frame;
+
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSS;
 
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.Image;
+
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 public class Robot extends IterativeRobot {
 
@@ -21,6 +28,7 @@ public class Robot extends IterativeRobot {
 	
 	public static OI oi;
 
+	public static VisionThread vt;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -36,6 +44,8 @@ public class Robot extends IterativeRobot {
     	sdi = new SmartDashboardInterface();
     	
 		oi = new OI();
+		
+		vt = new VisionThread();
         // instantiate the command used for the autonomous period
 		
     }
@@ -63,6 +73,9 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         //if (autonomousCommand != null) autonomousCommand.cancel();
+    	
+    	vt.start();
+    	
     }
 
     public void disabledInit(){

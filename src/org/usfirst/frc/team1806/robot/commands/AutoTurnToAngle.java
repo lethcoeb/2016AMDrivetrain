@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
+/*
  *
  */
 public class AutoTurnToAngle extends Command {
@@ -20,10 +20,12 @@ public class AutoTurnToAngle extends Command {
 	private PIDSource ts;
 	private PIDOutput to;
 	private PIDController tc;
+	private boolean pointToGoalMode;
 	
     public AutoTurnToAngle(double angle) {
         requires(Robot.dtSS);
         m_targetAngle = angle;
+        //pointToGoalMode = pointToGoal;
     }
 
     // Called just before this Command runs the first time
@@ -39,6 +41,9 @@ public class AutoTurnToAngle extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	if(pointToGoalMode){
+    		
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

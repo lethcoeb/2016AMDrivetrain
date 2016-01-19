@@ -1,8 +1,11 @@
 package org.usfirst.frc.team1806.robot;
 
 import java.lang.Thread.State;
+import java.time.Year;
 
 import org.usfirst.frc.team1806.robot.States.DrivetrainMode;
+import org.usfirst.frc.team1806.robot.States.VisionTracking;
+import org.usfirst.frc.team1806.robot.States.VisionTrackingPointTo;
 import org.usfirst.frc.team1806.robot.commands.TurnToAngleDriverInput;
 
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -26,8 +29,10 @@ public class OI {
 	public double LT;
 	public boolean A;
 	public boolean X;
+	public boolean Y;
 
 	private Latch arcadeTankLatch;
+	private Latch visionLatch;
 
 	public XboxController dc;
 	
@@ -40,8 +45,10 @@ public class OI {
 		RT = 0;
 		A = false;
 		X = false;
+		Y = false;
 		
 		arcadeTankLatch = new Latch();
+		visionLatch = new Latch();
 		dc = new XboxController(0, Constants.joystickDeadzoneConstant, Constants.triggerDeadzoneConstant);
 		
 	}
@@ -52,6 +59,24 @@ public class OI {
 		// read inputs
 		updateInputs();
 
+		if(LT > .5){
+			if(Robot.states.VisionTrackingPointToTracker == VisionTrackingPointTo.OFF && Robot.states.VisionTrackingTracker == VisionTracking.ON){
+				Robot.states.DrivetrainModeTracker = DrivetrainMode.POINTTOANGLE;
+				Robot.states.VisionTrackingPointToTracker = VisionTrackingPointTo.ON;
+				//enable pid controller
+				Robot.dtSS.enablePoint();
+				System.out.println("point controller enabled");
+			}
+		}else{
+			
+			if(Robot.states.VisionTrackingPointToTracker == VisionTrackingPointTo.ON){
+				Robot.states.DrivetrainModeTracker = DrivetrainMode.ARCADE;
+				Robot.dtSS.disableControllers();
+			}
+			Robot.states.VisionTrackingPointToTracker = VisionTrackingPointTo.OFF;
+			
+		}
+		
 		if(RT > .5 && Robot.states.DrivetrainModeTracker != States.DrivetrainMode.TURNTOANGLE){
 			Robot.states.DrivetrainModeTracker = States.DrivetrainMode.TURNTOANGLE;
 			new TurnToAngleDriverInput().start();
@@ -70,7 +95,11 @@ public class OI {
 			Robot.dtSS.resetAngle();
 		}
 
-		if (Robot.states.DrivetrainModeTracker == States.DrivetrainMode.ARCADE) {
+		if(Robot.states.VisionTrackingTracker == VisionTracking.ON && Robot.states.VisionTrackingPointToTracker == VisionTrackingPointTo.ON){
+			
+			//////do stuff here
+			
+		}else if (Robot.states.DrivetrainModeTracker == States.DrivetrainMode.ARCADE) {
 			//DEADZONES ARE HANDLED IN XBOX CONTROLLER CLASS
 			if(Math.abs(lsY) < Constants.joystickDeadzoneConstant){
 				lsY = 0;
@@ -95,6 +124,18 @@ public class OI {
 		}else if(Robot.states.DrivetrainModeTracker == States.DrivetrainMode.TURNTOANGLE){
 			//do nuttin bc its handled by the TurnToAngle command
 		}
+		
+		if(visionLatch.update(Y)){
+			if(Robot.states.VisionTrackingTracker == States.VisionTracking.OFF){
+				Robot.states.VisionTrackingTracker = States.VisionTracking.ON;
+				//Robot.vt.notify();
+				System.out.println("Vision tracking started");
+
+				
+			}else{
+				Robot.states.VisionTrackingTracker = States.VisionTracking.OFF;
+			}
+		}
 	}
 	
 	public void updateInputs(){
@@ -103,6 +144,7 @@ public class OI {
 		rsY = dc.getRightJoyY();
 		A = dc.getButtonA();
 		X = dc.getButtonX();
+		Y = dc.getButtonY();
 		RT = dc.getRightTrigger();
 		LT = dc.getLeftTrigger();
 	}

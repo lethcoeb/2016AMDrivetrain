@@ -46,6 +46,10 @@ public class DrivetrainSS extends Subsystem {
 	private double m_turn;
 	private PIDController turnController;
 	private boolean turnOnly;
+	
+	private PIDSource pointSource;
+	private PIDOutput pointOutput;
+	private PIDController pointController;
 
 	public DrivetrainSS() {
 		leftTalon = new Talon(RobotMap.leftMotor);
@@ -121,7 +125,7 @@ public class DrivetrainSS extends Subsystem {
 
 			@Override
 			public void pidWrite(double output) {
-				//this if else statement enables this pid controller to be uses as both a correction tool for
+				//this if else statement enables this pid controller to be uses as both a correction controller for
 				//the driving straight controller AND as a controller for just a turn
 				if(turnOnly){
 					arcadeDrive(0, output);
@@ -132,6 +136,38 @@ public class DrivetrainSS extends Subsystem {
 		};
 
 		turnController = new PIDController(Constants.turningP, Constants.turningI, Constants.turningD, turnSource, turnOutput);
+		
+		pointSource = new PIDSource() {
+			
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {
+				// TODO Auto-generated method stub
+				setPIDSourceType(PIDSourceType.kDisplacement);
+			}
+			
+			@Override
+			public double pidGet() {
+				// TODO Auto-generated method stub
+				return Robot.vt.deltaAngle;
+			}
+			
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				// TODO Auto-generated method stub
+				return PIDSourceType.kDisplacement;
+			}
+		};
+		
+		pointOutput = new PIDOutput() {
+			
+			@Override
+			public void pidWrite(double output) {
+				// TODO Auto-generated method stub
+				arcadeDrive(0, -output);
+			}
+		};
+		
+		pointController = new PIDController(Constants.turningP, Constants.turningI, Constants.turningD, pointSource, pointOutput);
 
 		
 		driveController.setAbsoluteTolerance(Constants.drivePIDTolerance);
@@ -139,14 +175,21 @@ public class DrivetrainSS extends Subsystem {
 		driveController.setOutputRange(-1, 1);
 		turnController.setInputRange(-180, 180);
 		turnController.setOutputRange(-1, 1);
+
+		pointController.setOutputRange(-1, 1);
+		pointController.setSetpoint(0);
+		pointController.setAbsoluteTolerance(Constants.turnPIDTolerance);
 		
 		m_turn = 0;
 		turnOnly = false;
 	}
 
+	/*
+	 * @param power Forwards and backwards.
+	 */
 	public void arcadeDrive(double power, double turn) {
-		leftTalon.set(.5 * power + .5 * turn);
-		rightTalon.set(.5 * power - .5 * turn);
+		leftTalon.set(power + .75* turn);
+		rightTalon.set(power - .75 * turn);
 	}
 
 	public void tankDrive(double left, double right) {
@@ -213,7 +256,7 @@ public class DrivetrainSS extends Subsystem {
 	}
 
 	public double accelZAxis() {
-		// TODO: is this up and down?
+		// FIXME : is this up and down?
 		return navx.getWorldLinearAccelZ();
 	}
 
@@ -310,6 +353,10 @@ public class DrivetrainSS extends Subsystem {
 		turnController.enable();
 	}
 	
+	public void enablePoint(){
+		pointController.enable();
+	}
+	
 	public void setDriveControllerSetpoint(double setpoint){
 		driveController.setSetpoint(setpoint);
 	}
@@ -326,6 +373,10 @@ public class DrivetrainSS extends Subsystem {
 		return turnController.onTarget();
 	}
 	
+	public boolean isPointControllerOnTarget(){
+		return pointController.onTarget();
+	}
+	
 	public void disableControllers(){
 		if(driveController.isEnabled()){
 			driveController.disable();
@@ -334,8 +385,14 @@ public class DrivetrainSS extends Subsystem {
 		if(turnController.isEnabled()){
 			turnController.disable();
 		}
+		
+		if(pointController.isEnabled()){
+			pointController.disable();
+		}
 
 	}
+	
+	
 	
 
 	public void initDefaultCommand() {

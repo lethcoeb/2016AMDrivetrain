@@ -22,6 +22,8 @@ public class SmartDashboardInterface {
 		SmartDashboard.putNumber("filtered roll", Robot.dtSS.getRollAverage());
 		SmartDashboard.putNumber("filtered pitch", Robot.dtSS.getPitchAverage());
 		
+		
+		SmartDashboard.putString("Vision?", String.valueOf(Robot.states.VisionTrackingTracker));
 	}
 	
 }
